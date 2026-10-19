@@ -14,6 +14,7 @@
         <div class="container py-4">
             <h1 class="text-center mb-0">
                 @yield('header', 'Mi Cabecera')
+                
             </h1>
         </div>
     </header>
