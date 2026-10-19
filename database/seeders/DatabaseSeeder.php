@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(MenuSeeder::class);
 
-        Mesa::factory()->count(12)->create();
-        Mesero::factory()->count(6)->create();
-        Cliente::factory()->count(40)->create();
+        Mesa::factory()->count(15)->create();
+        Mesero::factory()->count(8)->create();
+        Cliente::factory()->count(150)->create();
 
         $this->call(PedidoSeeder::class);
     }
