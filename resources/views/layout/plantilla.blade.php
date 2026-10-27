@@ -38,8 +38,10 @@
                         @if (auth()->user()->tieneRol('admin', 'mesero'))
                             <li class="nav-item"><a class="nav-link text-info" href="{{ route('cocina.inicio') }}"><i class="bi bi-fire me-1"></i> Cocina</a></li>
                         @endif
-                        <li class="nav-item"><a class="nav-link" href="{{ route('cliente.pedidos') }}"><i class="bi bi-receipt me-1 text-warning"></i> Mis Pedidos</a></li>
-                        <li class="nav-item"><a class="btn-dorado btn-sm" href="{{ route('cliente.reservar') }}"><i class="bi bi-calendar2-check me-1"></i> Reservar Mesa</a></li>
+                        @if (auth()->user()->esUsuario())
+                            <li class="nav-item"><a class="nav-link" href="{{ route('cliente.pedidos') }}"><i class="bi bi-receipt me-1 text-warning"></i> Mis Pedidos</a></li>
+                            <li class="nav-item"><a class="btn-dorado btn-sm" href="{{ route('cliente.reservar') }}"><i class="bi bi-calendar2-check me-1"></i> Reservar Mesa</a></li>
+                        @endif
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle me-1 text-warning"></i> {{ auth()->user()->name }}
@@ -83,6 +85,23 @@
         </div>
     @endif
 
+    @if ($errors->any())
+        <div class="container mt-3">
+            <div class="alert alert-danger bg-dark border-danger text-danger alert-dismissible fade show" role="alert">
+                <div class="d-flex align-items-center mb-1">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <strong>Por favor corrige los siguientes inconvenientes:</strong>
+                </div>
+                <ul class="mb-0 small ps-4">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
+
     <main class="flex-grow-1">
         @yield('content')
     </main>
@@ -120,7 +139,7 @@
                 <div class="col-lg-3 col-md-6">
                     <h5>Reservas & Pedidos</h5>
                     <p class="text-secondary small mb-2">Atención directa en salón y reservas:</p>
-                    <p class="h6 text-warning mb-3"><i class="bi bi-telephone-fill me-2"></i> +591 (4) 664-2890</p>
+                    <p class="h6 text-warning mb-3"><i class="bi bi-telephone-fill me-2"></i> +591 75127428</p>
                     @guest
                         <a href="{{ route('registro.create') }}" class="btn-outline-dorado btn-sm w-100 justify-content-center">Crear cuenta de cliente</a>
                     @endguest

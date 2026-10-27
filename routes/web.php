@@ -11,6 +11,11 @@ use App\Http\Controllers\PlatoController;
 use App\Http\Controllers\RegistroController;
 use Illuminate\Support\Facades\Route;
 
+// Ruta pública para el minijuego de la feria
+Route::get('/juego', function () {
+    return view('juego.index');
+})->name('juego.index');
+
 Route::get('/', [HomeController::class, 'index'])->name('inicio');
 
 Route::middleware('guest')->group(function () {

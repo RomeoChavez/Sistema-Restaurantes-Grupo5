@@ -14,6 +14,14 @@ class AdminMesaController extends Controller
         $datos = $request->validate([
             'numero' => ['required', 'integer', 'min:1', 'unique:mesas,numero'],
             'capacidad' => ['required', 'integer', 'min:1', 'max:20'],
+        ], [
+            'numero.unique' => 'Ya existe una mesa registrada con el número ingresado.',
+            'numero.required' => 'El número de mesa es obligatorio.',
+            'numero.integer' => 'El número de mesa debe ser un entero.',
+            'numero.min' => 'El número de mesa debe ser al menos 1.',
+            'capacidad.required' => 'La capacidad de personas es obligatoria.',
+            'capacidad.min' => 'La capacidad mínima debe ser de al menos 1 persona.',
+            'capacidad.max' => 'La capacidad máxima permitida es de 20 personas.',
         ]);
 
         Mesa::create([
@@ -23,7 +31,9 @@ class AdminMesaController extends Controller
             'disponible' => true,
         ]);
 
-        return redirect()->route('admin.inicio')->with('success', 'Mesa #' . $datos['numero'] . ' creada correctamente.');
+        return redirect()->route('admin.inicio', ['tab' => 'mesas'])
+            ->with('success', 'Mesa #' . $datos['numero'] . ' creada correctamente.')
+            ->with('pestana', 'mesas');
     }
 
     public function cambiarEstado(Request $request, Mesa $mesa): RedirectResponse
@@ -37,6 +47,8 @@ class AdminMesaController extends Controller
             'disponible' => $datos['estado'] === Mesa::ESTADO_LIBRE,
         ]);
 
-        return back()->with('success', 'Estado de la Mesa #' . $mesa->numero . ' actualizado a ' . $datos['estado'] . '.');
+        return redirect()->route('admin.inicio', ['tab' => 'mesas'])
+            ->with('success', 'Estado de la Mesa #' . $mesa->numero . ' actualizado a ' . $datos['estado'] . '.')
+            ->with('pestana', 'mesas');
     }
 }

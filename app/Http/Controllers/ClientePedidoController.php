@@ -15,8 +15,13 @@ use Illuminate\View\View;
 
 class ClientePedidoController extends Controller
 {
-    public function create(): View
+    public function create(Request $request): View|RedirectResponse
     {
+        if (!$request->user()->esUsuario()) {
+            $ruta = $request->user()->esAdmin() ? 'admin.inicio' : 'cocina.inicio';
+            return redirect()->route($ruta)->with('error', 'El personal del restaurante no puede realizar reservas de comensales.');
+        }
+
         $mesas = Mesa::libres()->orderBy('numero')->get();
         $categorias = Categoria::with(['platos' => fn ($consulta) => $consulta->disponibles()->orderBy('nombre')])
             ->whereHas('platos', fn ($consulta) => $consulta->disponibles())
@@ -27,6 +32,11 @@ class ClientePedidoController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        if (!$request->user()->esUsuario()) {
+            $ruta = $request->user()->esAdmin() ? 'admin.inicio' : 'cocina.inicio';
+            return redirect()->route($ruta)->with('error', 'El personal del restaurante no puede realizar reservas de comensales.');
+        }
+
         $datos = $request->validate([
             'mesa_id' => ['required', 'exists:mesas,id'],
             'platos' => ['required', 'array', 'min:1'],
@@ -90,8 +100,13 @@ class ClientePedidoController extends Controller
         return redirect()->route('cliente.pedidos')->with('success', '¡Tu reserva y pedido fueron registrados exitosamente! Mesa #' . $mesa->numero . ' reservada.');
     }
 
-    public function index(Request $request): View
+    public function index(Request $request): View|RedirectResponse
     {
+        if (!$request->user()->esUsuario()) {
+            $ruta = $request->user()->esAdmin() ? 'admin.inicio' : 'cocina.inicio';
+            return redirect()->route($ruta)->with('error', 'El personal del restaurante no gestiona pedidos personales.');
+        }
+
         $cliente = $request->user()->cliente;
 
         $pedidos = $cliente

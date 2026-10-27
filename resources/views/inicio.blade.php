@@ -20,9 +20,25 @@
                         <a href="#menu" class="btn-dorado">
                             <i class="bi bi-book-half"></i> Explorar la Carta
                         </a>
-                        <a href="{{ route('cliente.reservar') }}" class="btn-outline-dorado">
-                            <i class="bi bi-calendar-check-fill"></i> Reservar Mesa
-                        </a>
+                        @auth
+                            @if (auth()->user()->esUsuario())
+                                <a href="{{ route('cliente.reservar') }}" class="btn-outline-dorado">
+                                    <i class="bi bi-calendar-check-fill"></i> Reservar Mesa
+                                </a>
+                            @elseif (auth()->user()->esAdmin())
+                                <a href="{{ route('admin.inicio') }}" class="btn-outline-dorado">
+                                    <i class="bi bi-speedometer2"></i> Administración
+                                </a>
+                            @elseif (auth()->user()->esMesero())
+                                <a href="{{ route('cocina.inicio') }}" class="btn-outline-dorado">
+                                    <i class="bi bi-fire"></i> Cocina
+                                </a>
+                            @endif
+                        @else
+                            <a href="{{ route('cliente.reservar') }}" class="btn-outline-dorado">
+                                <i class="bi bi-calendar-check-fill"></i> Reservar Mesa
+                            </a>
+                        @endauth
                     </div>
                 </div>
                 <div class="col-lg-5">
