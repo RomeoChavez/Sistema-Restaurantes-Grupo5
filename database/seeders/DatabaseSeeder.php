@@ -7,7 +7,6 @@ use App\Models\Mesa;
 use App\Models\Mesero;
 use Illuminate\Database\Seeder;
 
-
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
@@ -19,5 +18,9 @@ class DatabaseSeeder extends Seeder
         Cliente::factory()->count(150)->create();
 
         $this->call(PedidoSeeder::class);
+
+        if (app()->environment('local')) {
+            $this->call(DemoUsuariosSeeder::class);
+        }
     }
 }

@@ -28,6 +28,8 @@ class PlatoFactory extends Factory
                 'Refresco de mocochinchi',
                 'Jugo de naranja',
             ]) . ' ' . fake()->numerify('###'),
+            'descripcion' => fake()->sentence(12),
+            'imagen' => null,
             'precio' => fake()->randomFloat(2, 8, 90),
             'disponible' => fake()->boolean(90),
         ];

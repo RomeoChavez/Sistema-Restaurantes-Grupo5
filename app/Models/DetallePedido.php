@@ -31,6 +31,6 @@ class DetallePedido extends Model
 
     public function subtotal(): float
     {
-        return $this->cantidad * $this->precio_unitario;
+        return $this->cantidad * (float) $this->precio_unitario;
     }
 }
